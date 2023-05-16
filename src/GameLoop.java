@@ -1,29 +1,35 @@
 class GameLoop implements Runnable {
     private boolean running = true;
     private GamePanel gamePanel;
+    private InputReader inputReader;
 
     public GameLoop(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
+        this.inputReader = new InputReader();
+        this.gamePanel.addKeyListener(inputReader);
     }
 
+    //runs continuously
     public void run() {
         System.out.println("Run method ran");
         while (running) {
 
-            // Update the game state
-            gamePanel.update();
+            this.inputReader.VK_UP_State();
 
-            // Repaint the game panel to update the display
+            gamePanel.updateBackgroundPosition();
+            gamePanel.locomotivePositionAnimation();
             gamePanel.repaint();
 
             try {
-                // Sleep for 16 milliseconds to keep the loop running at 60 frames per second
                 Thread.sleep(16);
-            } catch (InterruptedException e) {
-                // Handle the exception if necessary
+            }
+            catch (Exception e) {
+                System.out.println(e);
             }
         }
     }
+
+//    public void train
 
     public void stop() {
         running = false;

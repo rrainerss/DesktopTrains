@@ -15,11 +15,13 @@ public class Main {
         gameFrame.setSize(800, 600);
         gameFrame.pack();
         gameFrame.setLocationRelativeTo(null);
+        gameFrame.setResizable(false);
+        gameFrame.setTitle("Desktop Trains " + appVersion);
+        ImageIcon appIcon = new ImageIcon("icons/game_icon.png");
+        gameFrame.setIconImage(appIcon.getImage());
 
         // Make the GameFrame visible
         gameFrame.setVisible(true);
         gameFrame.start();
-
-        System.out.println("Main method ran");
     }
 }
