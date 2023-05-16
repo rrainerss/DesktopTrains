@@ -30,3 +30,4 @@
 ### Conclusions
 Took me an eternity to grasp the concept of Java Swing and working with visual objects. I think I've built a decent base for this idea and will definitely work on it more in my free time. Tried to use as much of my knowledge of Java as I can, alongside a little bit of artistic skills. Could always start this kind of work earlier.
 All graphics are made by myself.
+Rainers Strads IT1
