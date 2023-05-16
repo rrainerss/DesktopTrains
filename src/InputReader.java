@@ -6,44 +6,43 @@ public class InputReader implements KeyListener {
     private boolean VK_UP_Pressed;
     private boolean VK_DOWN_Pressed;
 
+    //Return button state
     public boolean VK_UP_State() {
         return VK_UP_Pressed;
     }
-
     public boolean VK_DOWN_State() {
         return VK_DOWN_Pressed;
     }
 
+    //Override default method for keyPressed event
     @Override
     public void keyPressed(KeyEvent event) {
-        //up arrow pressed
+        //Up arrow pressed
         if (event.getKeyCode() == KeyEvent.VK_UP && this.VK_UP_Pressed == false) {
-            System.out.println("UP ARROW pressed");
             this.VK_UP_Pressed = true;
             GamePanel.updateLocomotivePosition("up");
         }
-        //down arrow pressed
+        //Down arrow pressed
         if (event.getKeyCode() == KeyEvent.VK_DOWN && this.VK_DOWN_Pressed == false) {
-            System.out.println("DOWN ARROW pressed");
             this.VK_DOWN_Pressed = true;
             GamePanel.updateLocomotivePosition("down");
         }
     }
 
+    //Override default method for keyReleased event
     @Override
     public void keyReleased(KeyEvent event) {
-        //up arrow released
+        //Up arrow released
         if (event.getKeyCode() == KeyEvent.VK_UP && this.VK_UP_Pressed == true) {
-            System.out.println("UP ARROW released");
             this.VK_UP_Pressed = false;
         }
-        //down arrow released
+        //Down arrow released
         if (event.getKeyCode() == KeyEvent.VK_DOWN && this.VK_DOWN_Pressed == true) {
-            System.out.println("DOWN ARROW released");
             this.VK_DOWN_Pressed = false;
         }
     }
 
+    //Not used yet
     @Override
     public void keyTyped(KeyEvent event) {
         //

@@ -14,13 +14,15 @@ public class GamePanel extends JPanel {
     private static int[] coordinateLevels = {0, 14, 28};
     private static int currentCoordinateLevel = 14;
     private static int newCoordinateLevel = 14;
+    private BufferedImage bufferedImage;
     private Image backgroundImage;
     private Image foregroundImage;
     private Image locomotiveImage;
     private Locomotive locomotive1;
+    private Image obstacleImage1;
     private long animationStartTime;
 
-    // runs at start
+    //Runs at start of game, creates objects, calls starter methods
     public GamePanel() {
         locomotive1 = new Locomotive("TE10", "icons/TE10_V4.png", 500, 1, 1500, 90, 1);
         animationStartTime = 0;
@@ -32,24 +34,35 @@ public class GamePanel extends JPanel {
         this.requestFocus();
     }
 
-//    public static void addInputReader(JFrame gameFrame) {
-//        InputReader inputReader = new InputReader();
-//        gameFrame.addKeyListener(inputReader);
-//    }
-
+    //Java swing built-in method to draw components
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
-
-        // Paint moving backgrounds
+        //Draw backgrounds
         graphics.drawImage(backgroundImage, background1XCoordinate, 0, null);
         graphics.drawImage(backgroundImage, background2XCoordinate, 0, null);
         graphics.drawImage(foregroundImage, foreground1XCoordinate, 0, null);
         graphics.drawImage(foregroundImage, foreground2XCoordinate, 0, null);
+
+        //Iterate through obstacles and draw them
+        if(GeneratedObstacle.obstacles != null) {
+            for (Obstacle obstacle : GeneratedObstacle.obstacles) {
+                graphics.drawImage(obstacle.image, obstacle.obstacleXCoordinate, coordinateSteps[coordinateLevels[obstacle.level]] + obstacle.obstacleYOffset, null);
+            }
+        }
+
+        //Draw locomotive
         graphics.drawImage(locomotiveImage, 150, (int)locomotiveAnimatedCoordinate, null);
     }
 
+    //Move obstacles at a constant rate (same as backgrounds)
+    public void updateObstaclePosition() {
+        for (Obstacle obstacle : GeneratedObstacle.obstacles) {
+            obstacle.obstacleXCoordinate -= 3;
+        }
+    }
+
+    //Move backgrounds to create the illusion of a moving train
     public void updateBackgroundPosition() {
-        // Update the position of the moving backgrounds
         foreground1XCoordinate -= 3;
         if(foreground1XCoordinate < -640){
             foreground1XCoordinate = 0;
@@ -68,6 +81,7 @@ public class GamePanel extends JPanel {
         }
     }
 
+    //Jump locomotive through the coordinate levels
     public static void updateLocomotivePosition(String direction) {
         if(currentCoordinateLevel < 14) {
             if(direction.matches("down")) {
@@ -89,6 +103,7 @@ public class GamePanel extends JPanel {
         }
     }
 
+    //Animate the locomotive position change
     public static void locomotivePositionAnimation() {
         if(newCoordinateLevel > currentCoordinateLevel) {
             currentCoordinateLevel++;
@@ -100,44 +115,34 @@ public class GamePanel extends JPanel {
         }
     }
 
+    //Load assets into images
     private void loadBackgrounds() {
-        try {
-            // Load the image files
-            BufferedImage bufferedBackground = ImageIO.read(new File("backgrounds/infinite_map_1_background.png"));
-            BufferedImage bufferedForeground = ImageIO.read(new File("backgrounds/infinite_map_1_foreground.png"));
-
-            // Scale the images to the desired size
-            int width = bufferedBackground.getWidth();
-            int height = bufferedBackground.getHeight();
-            int scaledWidth = width * 2;
-            int scaledHeight = height * 2;
-            backgroundImage = bufferedBackground.getScaledInstance(scaledWidth, scaledHeight, Image.SCALE_SMOOTH);
-            foregroundImage = bufferedForeground.getScaledInstance(scaledWidth, scaledHeight, Image.SCALE_SMOOTH);
-        }
-        catch (Exception e) {
-            System.out.println(e);
-        }
+        backgroundImage = loadBufferedImage("backgrounds/infinite_map_1_background.png", 2);
+        foregroundImage = loadBufferedImage("backgrounds/infinite_map_1_foreground.png", 2);
+    }
+    private void loadLocomotive(Locomotive locomotive) {
+        locomotiveImage = loadBufferedImage(locomotive.spriteUrl, 2);
     }
 
-    private void loadLocomotive(Locomotive locomotive1) {
+    //Load images from file location, taking scale into account
+    public Image loadBufferedImage(String url, int scale) {
+        Image loadedImage = null;
         try {
-            BufferedImage bufferedImage = ImageIO.read(new File(locomotive1.spriteUrl));
+            bufferedImage = ImageIO.read(new File(url));
 
             int width = bufferedImage.getWidth();
             int height = bufferedImage.getHeight();
-            int scaledWidth = width * 2;
-            int scaledHeight = height * 2;
-            locomotiveImage = bufferedImage.getScaledInstance(scaledWidth, scaledHeight, Image.SCALE_SMOOTH);
+            int scaledWidth = width * scale;
+            int scaledHeight = height * scale;
+            loadedImage = bufferedImage.getScaledInstance(scaledWidth, scaledHeight, Image.SCALE_SMOOTH);
         }
         catch (Exception e) {
             System.out.println(e);
         }
+        return loadedImage;
     }
 
-    private void loadObstacles(Obstacle obstacle1) {
-
-    }
-
+    //Future plans
     private static void returnSmoothTransitionLevel(int start, int end, int level){
         
     }
