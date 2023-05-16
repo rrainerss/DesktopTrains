@@ -9,6 +9,7 @@ public class GamePanel extends JPanel {
     private int foreground1XCoordinate = 0;
     private int background2XCoordinate = 640;
     private int foreground2XCoordinate = 640;
+    //Manually predefined coordinate steps for smooth, hopefully efficient animations
     private static float locomotiveAnimatedCoordinate = 260;
     private static int[] coordinateSteps = {210, 211, 212, 214, 217, 221, 226, 232, 239, 245, 250, 254, 257, 259, 260, 261, 263, 266, 270, 275, 281, 288, 294, 299, 303, 306, 308, 309, 310, 310};
     private static int[] coordinateLevels = {0, 14, 28};
